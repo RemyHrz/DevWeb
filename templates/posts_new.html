@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block titre %}
+<title>Ajout d'une carte</title>
+{% endblock %}
+
+{% block body %}
+<br>
+    <h3>Nouvelle carte :</h3>
+    <br>
+    <form action="/carte/new" method="POST">
+        <textarea class="form-control" type="text" name="question" id="question" placeholder="Question" required></textarea>
+        <br>
+        <textarea class="form-control" type="text" name="answer" id="answer" placeholder="Réponse" required></textarea>
+        <br>
+        <input class="form-control" list="listcourse" name="course" id="course" placeholder="Cours" required>
+			<datalist id="listcourse">	
+			{% for course in courselist | unique %}
+			  <option value="{{ course['course'] }}">
+			{% endfor %}
+			</datalist>
+        <br>
+        <input type="submit" value="Envoyer" class="btn btn-success">
+    </form>
+    <hr>
+
+{% endblock %}
