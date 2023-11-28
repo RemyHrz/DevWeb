@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+<br>
     <h3>Nouvelle carte :</h3>
     <br>
     <form action="/carte/new" method="POST">
