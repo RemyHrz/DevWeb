@@ -13,10 +13,17 @@
 		<header class="d-flex justify-content-center py-3 border-bottom">
       <ul class="nav nav-pills">
         <li class="nav-item"><a href="/" class="nav-link {{ 'active' if active_page == 'index' else '' }}">Home</a></li>
-        <li class="nav-item"><a href="/carte/new" class="nav-link">Création de cartes</a></li>
-        <li class="nav-item"><a href="/carte" class="nav-link">Révisions</a></li>
-        <li class="nav-item"><a href="/quiz" class="nav-link">Quiz</a></li>
-        <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="/carte/new" class="nav-link {{ 'active' if active_page == 'Create' else '' }}">Création de cartes</a></li>
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle {{ 'active' if active_page == 'Rev' else '' }}" href="#" data-bs-toggle="dropdown" aria-expanded="false">Révisions</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/carte">Toutes les cartes</a></li>
+                {% for course in courselist|unique %} 
+                <li><a class="dropdown-item" href="/carte/{{course['course']}}">{{ course['course'] }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+        <li class="nav-item"><a href="/quiz" class="nav-link {{ 'active' if active_page == 'Quiz' else '' }}">Quiz</a></li>
+        <li class="nav-item"><a href="/about" class="nav-link {{ 'active' if active_page == 'About' else '' }}">About</a></li>
       </ul>
     	</header>
 
@@ -25,5 +32,6 @@
 		</div>
 
 	</body>
+	<script> src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}" </script>
 </html>
 

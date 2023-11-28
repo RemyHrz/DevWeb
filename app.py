@@ -20,7 +20,8 @@ class Cards(db.Model):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+	courselist = Cards.query.with_entities(Cards.course)
+	return render_template("index.html", courselist=courselist)
 
 @app.route("/carte", methods=['GET', 'POST'])
 def cards():

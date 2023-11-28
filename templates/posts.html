@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% set active_page = "Rev" %}
 {% block titre %}
 <title>Page des messages</title>
 {% endblock %}
@@ -26,11 +26,12 @@ Trier par cours : <select name="selectcourse" id="selectcourse">
 			<br>
     {% for card in cards %}
     	<div class="bg-body-tertiary border rounded-3 p-2">
-	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4> 
-	        <br>
-	        <!--<p style="white-space: pre-wrap;" class="modal-body py-0">Réponse: {{ card['answer'] }}</p>-->
-	        <p><small> Date de création : {{ card['date_created'].strftime('%d-%m-%Y à %H:%M') }}</small></p>
-	        <a class="btn btn-primary btn-sm" href="/carte/edit/{{ card['id'] }}">Modifier</a>
+	        <div class="row mt-1"><div class="col-9"><h4 class="fw-bold mb-0">{{ card['question'] }}</h4></div><div class="col-3"><small>Créée le {{ card['date_created'].strftime('%d-%m-%Y à %H:%M') }}</small></div></div>
+	        <br><div class="row mt-1"><br><button class="btn btn-info btn-sm col-1" id ="buttonans{{ card['id'] }}" onclick="getElementById('answer{{ card['id'] }}').style.display = 'block'; this.style.display = 'none';getElementById('buttonhid{{ card['id'] }}').style.display = 'block'">Réponse</button>
+	        <button class="btn btn-info btn-sm col-1" style ="display:none" id ="buttonhid{{ card['id'] }}" onclick="getElementById('answer{{ card['id'] }}').style.display = 'none';this.style.display = 'none'; getElementById('buttonans{{ card['id'] }}').style.display = 'block'">Masquer</button>       
+			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0 col-1" id="answer{{ card['id'] }}">   {{ card['answer'] }}</span>			  
+			  </div>			  
+			  <br><a class="btn btn-primary btn-sm" href="/carte/edit/{{ card['id'] }}">Modifier</a>
 	        <a class="btn btn-danger btn-sm" href="/carte/delete/{{ card['id'] }}">Supprimer</a>
 	    </div>
 	    <br>
