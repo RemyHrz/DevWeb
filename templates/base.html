@@ -18,7 +18,7 @@
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/carte">Toutes les cartes</a></li>
                 {% for course in courselist|unique %} 
-                <li><a class="dropdown-item" href="/carte/{{course['course']}}">{{ course['course'] }}</a></li>
+                <li><a class="dropdown-item" href="/cours/{{course['course']}}">{{ course['course'] }}</a></li>
                 {% endfor %}
               </ul>
             </li>

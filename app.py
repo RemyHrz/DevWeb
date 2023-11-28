@@ -29,6 +29,12 @@ def cards():
     courselist = Cards.query.with_entities(Cards.course)
     return render_template("posts.html", cards=all_cards, courselist=courselist)
 
+@app.route("/cours/<course>")
+def course(course):
+    all_cards = Cards.query.order_by(Cards.date_created.desc()).all()
+    courselist = Cards.query.with_entities(Cards.course)
+    return render_template("course.html", cards=all_cards, courselist=courselist, current=course)
+
 @app.route("/carte/delete/<int:id>")
 def delete_card(id):
     card = Cards.query.get_or_404(id)
