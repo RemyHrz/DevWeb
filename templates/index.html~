@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% set active_page = "index" %}
 
 {% block titre %}
 <title>Page d'accueil</title>
@@ -12,7 +12,9 @@
     <div class="bg-body-tertiary p-5 rounded">
       <div class="col-sm-8 py-5 mx-auto">
         <h1>Bienvenue sur votre site de révision préféré ! </h1>
+        
         <a class="btn btn-primary" href="/carte" role="button">Allez voir les cartes</a>
+        <a class="btn btn-success" href="/carte/new" role="button">Ajouter une carte</a>
     </div>
 </div>
 </div>

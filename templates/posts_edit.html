@@ -5,8 +5,10 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Mise à jour du message :</h1>
-    <form action="/carte/edit/{{ card['id'] }}" method="POST">
+<br>
+    <h1>Modifier la carte :</h1>
+    <br>
+    <form action="{% if current %}/{{current}}/edit/{% else %}/carte/edit/{% endif %}{{ card['id'] }}" method="POST">
         <textarea class="form-control" type="text" name="question" id="question" placeholder="Question : {{ card['question'] }}" required>{{ card['question'] }}</textarea>
         <br>
         <textarea class="form-control" type="text" name="answer" id="answer" placeholder="Réponse : {{ card['answer'] }}" required>{{ card['answer'] }}</textarea>
@@ -18,9 +20,21 @@
 			{% endfor %}
 			</datalist>
         <br>
+        A tester le <span id="daterev">{{ card.date_rev.strftime('%d-%m-%Y') }}</span><br>
+        <br> Réinitialiser la date de test : <input onclick="datefc();" type="checkbox" name="reset" id="reset" value="reset" ><br>
+        <br>
         <input type="submit" value="Envoyer" class="btn btn-success">
         <hr>
     </form>
+
+<script type="text/javascript" >
+function datefc(){if($('#reset').is(':checked')){
+	$("#daterev").text("{{ today.strftime('%d-%m-%Y') }}");
+	}else{
+    $("#daterev").text("{{ card.date_rev.strftime('%d-%m-%Y') }}");
+}
+}
+</script>
 
 {% endblock %}
 

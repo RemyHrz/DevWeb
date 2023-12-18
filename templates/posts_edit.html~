@@ -5,18 +5,10 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Mise à jour du message :</h1>
-    <form action="/posts/edit/{{ post['id'] }}" method="POST">
-        <input class="form-control" type="text" name="title" id="title" value="{{ post['title'] }}"  placeholder="Titre : {{ post['title'] }}">
-        <br>
-        <input class="form-control" type="text" name="author" id="author" value="{{ post['author'] }}" placeholder="Auteur : {{ post['author'] }}">
-        <br>
-        <textarea class="form-control" name="content" id="content" placeholder="{{ post['content'] }}">{{ post['content'] }}</textarea>
-        <br>
-        <input type="submit" value="Sauver" class="btn btn-success">
-    </form>
-    <hr>
-    <form action="/carte/new" method="POST">
+<br>
+    <h1>Modifier la carte :</h1>
+    <br>
+    <form action="{% if current %}/{{current}}/edit/{% else %}/carte/edit/{% endif %}{{ card['id'] }}" method="POST">
         <textarea class="form-control" type="text" name="question" id="question" placeholder="Question : {{ card['question'] }}" required>{{ card['question'] }}</textarea>
         <br>
         <textarea class="form-control" type="text" name="answer" id="answer" placeholder="Réponse : {{ card['answer'] }}" required>{{ card['answer'] }}</textarea>
@@ -28,8 +20,21 @@
 			{% endfor %}
 			</datalist>
         <br>
+        A tester le <span id="daterev">{{ card.date_rev.strftime('%d-%m-%Y') }}</span><br>
+        <br> Réinitialiser la carte : <input onclick="datefc();" type="checkbox" name="reset" id="reset" value="reset" ><br>
+        <br>
         <input type="submit" value="Envoyer" class="btn btn-success">
+        <hr>
     </form>
+
+<script type="text/javascript" >
+function datefc(){if($('#reset').is(':checked')){
+	$("#daterev").text("{{ today.strftime('%d-%m-%Y') }}");
+	}else{
+    $("#daterev").text("{{ card.date_rev.strftime('%d-%m-%Y') }}");
+}
+}
+</script>
 
 {% endblock %}
 
