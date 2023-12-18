@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% set active_page = "Quiz" %}
+{% set nombrecarte=namespace(value=0) %}
+{% block titre %}
+<title>Quiz {{ current }}!</title>
+{% endblock %}
+
+{% block body %}
+
+{% if cards %} 
+<div class="row mt-2">
+		<div class="col-10">
+		    <h1>{{ current }}</h1>
+		</div>
+		</div>
+<!--<h1>{{ current }}:</h1>-->
+<div class="container my-5">
+
+
+
+    {% for card in cards %}
+    	 {% if card.date_rev.date() <= today %}
+    	 {% if card.course == current %}
+    	 	{% set nombrecarte.value = nombrecarte.value + 1 %}
+     	<div class="bg-body-tertiary border rounded-3 p-2">
+	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>     
+			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>			  
+			  <span>
+			  <br>
+			  <a class="btn btn-info btn-sm col-1" id ="buttonans{{ card['id'] }}" onclick="actionQR('{{ card['id'] }}');this.style.display = 'none'">Réponse</a>			  
+			  <a class="btn btn-success btn-sm" style="display:none" id="success{{ card['id'] }}" href="/quiz/{{ current }}/sucess/{{ card['id'] }}">Success</a>
+			  <a class="btn btn-danger btn-sm" style="display:none" id="fail{{ card['id'] }}" href="/quiz/{{ current }}/fail/{{ card['id'] }}">Fail</a></span>
+			  </div>
+			  <br> 		  
+			  {% endif %}
+			  {% endif %}
+		
+{% endfor %}
+
+
+{% else %}
+
+
+
+<div class="container my-5">
+{% if totalquiz %}{% if totalquiz.total > 0 %}{{ (100*totalquiz.result/totalquiz.total)|round|int }}% de réussite aujourd'hui{% endif %}{% endif %}
+<h1> Vous n'avez plus de carte a tester aujourd'hui </h1> 
+<a class="btn btn-primary" href="{% if current %}/cours/{{current}}{% else %}/carte{% endif %}" role="button">Retourner sur la liste de cartes</a> 
+
+{% endif %}
+</div>
+
+<script type="text/javascript" >
+function actionQR(id){
+	$('#answer'+id).toggle();
+	$('#success'+id).toggle();
+	$('#fail'+id).toggle();
+}
+
+</script>
+{% endblock %}
+
