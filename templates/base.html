@@ -4,12 +4,12 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">		
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 		<script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
 		{% block titre %} {% endblock %}
-		
+
 	</head>
 	<body style="height: 100vh;">
 		<header class="d-flex justify-content-center py-3 border-bottom">
@@ -19,7 +19,7 @@
         <li class="nav-item dropdown"><a class="nav-link dropdown-toggle {{ 'active' if active_page == 'Rev' else '' }}" href="#" data-bs-toggle="dropdown" aria-expanded="false">{{ currentc if active_page == 'Rev' else 'Cours' }}</a>
               <ul class="dropdown-menu">
               {% if courselist|unique|list|count > 0 %}
-                {% for course in courselist|unique %} 
+                {% for course in courselist|unique %}
                 {% if course.course != currentc %}
                 <li><a class="dropdown-item" href="/cours/{{course['course']}}">{{ course['course'] }}</a></li>
                 {% endif %}
@@ -33,7 +33,8 @@
         			<ul class="dropdown-menu">
         			{% if courselist|unique|list|count > 0 %}
         			 <li><a class="dropdown-item" href="/quiz">Toute les cartes</a></li>
-                {% for course in courselist|unique %} 
+        			 <li><a class="dropdown-item" href="/quiz/infinity">Quiz Illimité</a></li>
+                {% for course in courselist|unique %}
                 {% if course.course != current %}
                 <li><a class="dropdown-item" href="/quiz/{{course['course']}}">{{ course['course'] }}</a></li>
                 {% endif %}
