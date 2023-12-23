@@ -9,29 +9,29 @@
 
 
 <div class="container my-5">
-{% if cards %} 
+{% if cards %}
 
     {% for card in cards %}
-    	
+
     	 	{% set nombrecarte.value = nombrecarte.value + 1 %}
      	 <div class="bg-body-tertiary border rounded-3 p-2">
-	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>     
-			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>			  
+	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
+			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>
 			  <span>
 			  <br>
-			  <a class="btn btn-info btn-sm col-1" id ="buttonans{{ card['id'] }}" onclick="actionQR('{{ card['id'] }}');this.style.display = 'none'">Réponse</a>			  
+			  <a class="btn btn-info btn-sm" id ="buttonans{{ card['id'] }}" onclick="actionQR('{{ card['id'] }}');this.style.display = 'none'">Réponse</a>
 			  <a class="btn btn-success btn-sm" style="display:none" id="success{{ card['id'] }}" href="/carte/quiz/sucess/{{ card['id'] }}">Success</a>
 			  <a class="btn btn-danger btn-sm" style="display:none" id="fail{{ card['id'] }}" href="/carte/quiz/fail/{{ card['id'] }}">Fail</a></span>
 			  </div>
-			  <br> 
-	
-		
+			  <br>
+
+
 {% endfor %}
 {% else %}
 
-{% if totalquiz.total > 0 %}{{ (100*totalquiz.result/totalquiz.total)|round|int }}% de réussite aujourd'hui{% endif %}
- 
-<h1> Vous n'avez plus de carte a tester aujourd'hui </h1> 
+
+
+<h1> Vous n'avez plus de carte a tester aujourd'hui </h1>
 <a class="btn btn-primary" href="/carte" role="button">Retourner sur la liste de cartes</a>
 
 {% endif %}
