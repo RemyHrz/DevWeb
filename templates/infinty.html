@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% set active_page = "Quiz" %}
+{% set nombrecarte=namespace(value=0) %}
+{% block titre %}
+<title>Quiz Illimité</title>
+{% endblock %}
+
+{% block body %}
+
+
+<div class="container my-5">
+{% if cards %}
+
+    {% for card in cards %}
+
+    	 	{% set nombrecarte.value = nombrecarte.value + 1 %}
+     	 <div id="card{{ card['id'] }}"><div class="bg-body-tertiary border rounded-3 p-2" >
+	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
+			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>
+			  <span>
+			  <br>
+			  <a class="btn btn-info btn-sm" id ="buttonans{{ card['id'] }}" onclick="actionQR('{{ card['id'] }}');this.style.display = 'none'">Réponse</a>
+			  <a class="btn btn-success btn-sm" style="display:none" id="success{{ card['id'] }}" onclick="actioncarte('{{ card['id'] }}'); updatescore('success');">Success</a>
+			  <a class="btn btn-danger btn-sm" style="display:none" id="fail{{ card['id'] }}" onclick="actioncarte('{{ card['id'] }}');updatescore('fail');">Fail</a></span>
+			  </div><br></div>
+
+
+
+{% endfor %}
+{% else %}
+
+
+
+<h1> Vous n'avez plus de carte a tester aujourd'hui </h1>
+<a class="btn btn-primary" href="/carte" role="button">Retourner sur la liste de cartes</a>
+
+{% endif %}
+<p id="scoreDisplay" style="display:none" >Score: <span id="score">0</span>%</p>
+
+</div>
+<script type="text/javascript" >
+let success_count = {value:0};
+let totalcard = {value:0};
+function actionQR(id){
+	$('#answer'+id).toggle();
+	$('#success'+id).toggle();
+	$('#fail'+id).toggle();
+}
+function actioncarte(id){
+	$('#card'+id).toggle();
+}
+function updatescore(result){
+    if (result === 'success'){
+        success_count.value += 1;
+        totalcard.value += 1;
+    };
+    if (result === 'fail'){
+        totalcard.value += 1;
+    };
+    if (totalcard.value === {{ total }}){
+    let percent = (success_count.value/{{ total }})*100;
+        $('#score').text(percent.toFixed(2));
+        $('#scoreDisplay').toggle();
+}
+}
+</script>
+{% endblock %}
+
