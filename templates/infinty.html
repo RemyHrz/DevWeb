@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% set active_page = "Quiz" %}
+{% set page = "inf" %}
 {% set nombrecarte=namespace(value=0) %}
 {% block titre %}
 <title>Quiz Illimité</title>
@@ -8,9 +9,14 @@
 {% block body %}
 
 
-<div class="container my-5">
-{% if cards %}
 
+{% if cards %}
+<div class="row mt-2">
+		<div class="col-10">
+		    <h1>Quiz Illimité !</h1>
+		</div>
+		</div>
+<div class="container my-5">
     {% for card in cards %}
 
     	 	{% set nombrecarte.value = nombrecarte.value + 1 %}
