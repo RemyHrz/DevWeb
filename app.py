@@ -43,32 +43,36 @@ def custom_render_template(template_name_or_list, **kwargs):
 
 @app.route("/")
 def index():
-	return custom_render_template("index.html")
+    all_cards = Cards.query.order_by(Cards.date_rev.asc()).all()
+    todo = Cards.query.filter((datetime.now().date() + timedelta(days=1)) > Cards.date_rev).order_by(Cards.date_rev.asc()).all()
+    return custom_render_template("index.html", cards=all_cards, todo=todo)
 
 @app.route("/carte", methods=['GET', 'POST'])
 def cards():
     all_cards = Cards.query.order_by(Cards.date_rev.asc()).all()
-    return custom_render_template("posts.html", cards=all_cards)
+    todo = Cards.query.filter((datetime.now().date() + timedelta(days=1)) > Cards.date_rev).order_by(Cards.date_rev.asc()).all()
+    return custom_render_template("posts.html", cards=all_cards, todo=todo)
 
 @app.route("/cours/<course>", methods=["GET", "POST"])
 def course(course):
-	if request.method == "POST":
-		card_question = request.form["question"]
-		card_question = card_question[0].upper() + card_question[1:]
-		card_answer = request.form["answer"]
-		card_answer = card_answer[0].upper() + card_answer[1:]
-		card_course = request.form["course"]
-		card_course = card_course[0].upper() + card_course[1:]
-		new_card = Cards(question=card_question, answer=card_answer, course=card_course)
-		db.session.add(new_card)
-		db.session.commit()
-		return redirect(str("/cours/")+course)
-	else:
-		all_cards = Cards.query.filter(Cards.course == course).order_by(Cards.date_rev.asc()).all()
-		if len(all_cards):
-		    return custom_render_template("course.html", cards=all_cards, currentc=course)
-		else:
-		    return redirect("/carte")
+    if request.method == "POST":
+        card_question = request.form["question"]
+        card_question = card_question[0].upper() + card_question[1:]
+        card_answer = request.form["answer"]
+        card_answer = card_answer[0].upper() + card_answer[1:]
+        card_course = request.form["course"]
+        card_course = card_course[0].upper() + card_course[1:]
+        new_card = Cards(question=card_question, answer=card_answer, course=card_course)
+        db.session.add(new_card)
+        db.session.commit()
+        return redirect(str("/cours/")+course)
+    else:
+        all_cards = Cards.query.filter(Cards.course == course).order_by(Cards.date_rev.asc()).all()
+        todo = Cards.query.filter(Cards.course == course, (datetime.now().date() + timedelta(days=1)) > Cards.date_rev).order_by(Cards.date_rev.asc()).all()
+        if len(all_cards):
+            return custom_render_template("course.html", cards=all_cards, currentc=course, todo=todo)
+        else:
+            return redirect("/carte")
 
 @app.route("/carte/delete/<int:id>")
 def delete_card(id):

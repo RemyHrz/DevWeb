@@ -12,6 +12,7 @@
     <div class="bg-body-tertiary p-5 rounded">
       <div class="col-sm-8 py-5 mx-auto">
         <h1>Bienvenue sur votre site de révision préféré ! </h1>
+          <span>Vous avez {{ cards|list|count }} carte{{ "s" if cards|list|count > 1}} dont {{ todo|list|count }} à faire aujourd'hui</span><br><br>
         <a class="btn btn-primary" href="/carte" role="button">Allez voir les cartes</a>
         <a class="btn btn-success" href="/carte/new" role="button">Ajouter une carte</a>
     </div>

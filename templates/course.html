@@ -7,13 +7,13 @@
 {% block body %}
 	<div class="row mt-2">
 		<div class="col-10">
-		    <h1>{{ currentc }} (<small>{{ cards|list|count }}</small>):</h1>
+		    <br><h1>{{ currentc }} (<small>{{ cards|list|count }}</small>):</h1>
 		</div>
 		<div class="col-2">
-    		<a class="btn btn-success" href="/carte/new/{{ currentc }}">Nouvelle carte</a>
+    		<br><a class="btn btn-success" href="/carte/new/{{ currentc }}">Nouvelle carte</a>
 		</div>
 	</div>
-
+<span> {%  if todo|list|count == 0 %}Vous n'avez pas de carte {% else %} Vous avez {{ todo|list|count }} carte{{ "s" if todo|list|count > 1}}{% endif %} à faire aujourd'hui</span><br>
     <br>
 
     {% if cards %}

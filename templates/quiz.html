@@ -11,7 +11,7 @@
 {% if cards %}
 <div class="row mt-2">
 		<div class="col-10">
-		    <h1>{{ cards|list|count}} carte{{ "s" if cards|list|count > 1}} à faire aujourd'hui</h1>
+		    <br><h1>Vous avez {{ cards|list|count}} carte{{ "s" if cards|list|count > 1}} à faire aujourd'hui</h1>
 		</div>
 		</div>
 <div class="container my-5">
@@ -33,7 +33,7 @@
 {% else %}
 
 
-
+<div class="container my-5">
 <h1> Vous n'avez plus de carte a tester aujourd'hui </h1>
 <a class="btn btn-primary" href="/carte" role="button">Retourner sur la liste de cartes</a>
 
