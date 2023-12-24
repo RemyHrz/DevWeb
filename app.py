@@ -29,21 +29,26 @@ class Total(db.Model):
 	def __repr__(self):
 		return str(self.total)
 
+#Pour éviter de recréer les variables à chaque fois    
+def custom_render_template(template_name_or_list, **kwargs):
+    common_variables = {
+        'courselist': Cards.query.with_entities(Cards.course),
+        'hour': datetime.now().replace(hour=19, minute=0, second=0),
+        'now': datetime.now(),
+        'today': datetime.now().date(),
+        'tomorrow': datetime.now().date() + timedelta(days=1)
+    }
+    kwargs.update(common_variables)
+    return render_template(template_name_or_list, **kwargs)
+
 @app.route("/")
 def index():
-	courselist = Cards.query.with_entities(Cards.course)
-	hour = datetime.now().replace(hour=19, minute=0, second=0)
-	now = datetime.now()
-	return render_template("index.html", courselist=courselist, hour=hour, now=now)
+	return custom_render_template("index.html")
 
 @app.route("/carte", methods=['GET', 'POST'])
 def cards():
     all_cards = Cards.query.order_by(Cards.date_rev.asc()).all()
-    courselist = Cards.query.with_entities(Cards.course)
-    today = datetime.now().date()
-    hour = datetime.now().replace(hour=19, minute=0, second=0)
-    now = datetime.now()
-    return render_template("posts.html", cards=all_cards, courselist=courselist, today=today, hour=hour, now=now)
+    return custom_render_template("posts.html", cards=all_cards)
 
 @app.route("/cours/<course>", methods=["GET", "POST"])
 def course(course):
@@ -59,13 +64,9 @@ def course(course):
 		db.session.commit()
 		return redirect(str("/cours/")+course)
 	else:
-		today = datetime.now().date()
 		all_cards = Cards.query.filter(Cards.course == course).order_by(Cards.date_rev.asc()).all()
 		if len(all_cards):
-		    courselist = Cards.query.with_entities(Cards.course)
-		    hour = datetime.now().replace(hour=19, minute=0, second=0)
-		    now = datetime.now()
-		    return render_template("course.html", cards=all_cards, courselist=courselist, currentc=course, today=today, hour=hour, now=now)
+		    return custom_render_template("course.html", cards=all_cards, currentc=course)
 		else:
 		    return redirect("/carte")
 
@@ -99,10 +100,7 @@ def edit_card(id):
         db.session.commit()
         return redirect("/carte")
     else:
-    	today = datetime.now().date()
-    	hour = datetime.now().replace(hour=19, minute=0, second=0)
-    	now = datetime.now()
-    	return render_template("posts_edit.html", card=card, today=today, hour=hour, now=now)
+    	return custom_render_template("posts_edit.html", card=card)
 
 @app.route("/<course>/edit/<int:id>", methods=['GET', 'POST'])
 def edit_card_course(id, course):
@@ -120,39 +118,25 @@ def edit_card_course(id, course):
         db.session.commit()
         return redirect(str("/cours/")+course)
     else:
-    	today = datetime.now().date()
-    	hour = datetime.now().replace(hour=19, minute=0, second=0)
-    	now = datetime.now()
-    	return render_template("posts_edit.html", card=card, current=course, today=today, hour=hour, now=now)
+    	return custom_render_template("posts_edit.html", card=card, current=course)
 
 @app.route("/quiz")
 def quiz_card():
-	today = datetime.now().date()
 	tomorrow = datetime.now().date() + timedelta(days=1)
-	courselist = Cards.query.with_entities(Cards.course)
 	all_cards = Cards.query.filter(tomorrow > Cards.date_rev).order_by(Cards.date_rev.asc()).all()
-	hour = datetime.now().replace(hour=19, minute=0, second=0)
-	now = datetime.now()
-	return render_template("quiz.html",cards=all_cards, courselist=courselist, today=today, hour=hour, now=now)
+	return custom_render_template("quiz.html",cards=all_cards)
 
 @app.route("/quiz/infinity")
 def infinity():
-	courselist = Cards.query.with_entities(Cards.course)
 	all_cards = Cards.query.order_by(Cards.date_rev.asc()).all()
 	total = len(all_cards)
-	hour = datetime.now().replace(hour=19, minute=0, second=0)
-	now = datetime.now()
-	return render_template("infinty.html",cards=all_cards, courselist=courselist, hour=hour, now=now, total=total)
+	return custom_render_template("infinty.html",cards=all_cards, total=total)
 
 @app.route("/quiz/<course>", methods=["GET", "POST"])
 def quizcourse(course):
-	today = datetime.now().date()
 	tomorrow = datetime.now().date() + timedelta(days=1)
 	all_cards = Cards.query.filter(tomorrow > Cards.date_rev).filter(Cards.course == course).order_by(Cards.date_rev.asc()).all()
-	courselist = Cards.query.with_entities(Cards.course)
-	hour = datetime.now().replace(hour=19, minute=0, second=0)
-	now = datetime.now()
-	return render_template("quizcourse.html", cards=all_cards, courselist=courselist, current=course, today=today, now=now, hour=hour)
+	return custom_render_template("quizcourse.html", cards=all_cards, current=course)
 
 @app.route("/quiz/<course>/sucess/<int:id>")
 def quiz_course_success(id, course):
@@ -204,10 +188,7 @@ def new_card():
         db.session.commit()
         return redirect("/carte")
     else:
-    	courselist = Cards.query.with_entities(Cards.course)
-    	hour = datetime.now().replace(hour=19, minute=0, second=0)
-    	now = datetime.now()
-    	return render_template("posts_new.html", courselist=courselist, hour=hour, now=now)
+    	return custom_render_template("posts_new.html")
 
 @app.route("/carte/new/<course>", methods=["GET", "POST"])
 def new_card_course(course):
@@ -223,11 +204,8 @@ def new_card_course(course):
         db.session.commit()
         return redirect(str("/cours/")+course)
     else:
-    	courselist = Cards.query.with_entities(Cards.course)
-    	hour = datetime.now().replace(hour=19, minute=0, second=0)
-    	now = datetime.now()
-    	return render_template("posts_new.html", courselist=courselist, current=course, hour=hour, now=now)
+    	return custom_render_template("posts_new.html", current=course)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
