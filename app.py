@@ -57,12 +57,12 @@ def cards():
 def course(course):
     if request.method == "POST":
         card_question = request.form["question"]
-        card_question = card_question[0].upper() + card_question[1:]
+        cardquestion = card_question[0].upper() + card_question[1:]
         card_answer = request.form["answer"]
-        card_answer = card_answer[0].upper() + card_answer[1:]
+        cardanswer = card_answer[0].upper() + card_answer[1:]
         card_course = request.form["course"]
-        card_course = card_course[0].upper() + card_course[1:]
-        new_card = Cards(question=card_question, answer=card_answer, course=card_course)
+        cardcourse = card_course[0].upper() + card_course[1:]
+        new_card = Cards(question=cardquestion, answer=cardanswer, course=cardcourse)
         db.session.add(new_card)
         db.session.commit()
         return redirect(str("/cours/")+course)
@@ -92,12 +92,12 @@ def delete_card_course(id, course):
 def edit_card(id):
     card = Cards.query.get_or_404(id)
     if request.method == "POST":
-        card.question = request.form['question']
-        card.question = card.question[0].upper() + card.question[1:]
-        card.answer = request.form['answer']
-        card.answer = card.answer[0].upper() + card.answer[1:]
-        card.course = request.form['course']
-        card.course = card.course[0].upper() + card.course[1:]
+        cardquestion = request.form['question']
+        card.question = cardquestion[0].upper() + cardquestion[1:]
+        cardanswer = request.form['answer']
+        card.answer = cardanswer[0].upper() + cardanswer[1:]
+        cardcourse = request.form['course']
+        card.course = cardcourse[0].upper() + cardcourse[1:]
         if 'reset' in request.form:
         	card.interval = 1
         	card.date_rev = datetime.now().date()
@@ -110,12 +110,12 @@ def edit_card(id):
 def edit_card_course(id, course):
     card = Cards.query.get_or_404(id)
     if request.method == "POST":
-        card.question = request.form['question']
-        card.question = card.question[0].upper() + card.question[1:]
-        card.answer = request.form['answer']
-        card.answer = card.answer[0].upper() + card.answer[1:]
-        card.course = request.form['course']
-        card.course = card.course[0].upper() + card.course[1:]
+        cardquestion = request.form['question']
+        card.question = cardquestion[0].upper() + cardquestion[1:]
+        cardanswer = request.form['answer']
+        card.answer = cardanswer[0].upper() + cardanswer[1:]
+        cardcourse = request.form['course']
+        card.course = cardcourse[0].upper() + cardcourse[1:]
         if 'reset' in request.form:
         	card.interval = 1
         	card.date_rev = datetime.now().date()
