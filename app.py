@@ -146,7 +146,8 @@ def quizcourse(course):
 def quiz_course_success(id, course):
     card = Cards.query.get_or_404(id)
     card.interval = card.interval*2
-    card.date_rev = card.date_rev+timedelta(days=card.interval)
+    date_rev = card.date_rev
+    card.date_rev = date_rev+timedelta(days=card.interval)
     card.last_rev = datetime.now().date()
     db.session.commit()
     return redirect(str("/quiz/")+course)
@@ -164,7 +165,8 @@ def quiz_course_fail(id, course):
 def quiz_success(id):
     card = Cards.query.get_or_404(id)
     card.interval = card.interval*2
-    card.date_rev = card.date_rev+timedelta(days=card.interval)
+    date_rev = card.date_rev
+    card.date_rev = date_rev+timedelta(days=card.interval)
     card.last_rev = datetime.now().date()
     db.session.commit()
     return redirect("/quiz")
