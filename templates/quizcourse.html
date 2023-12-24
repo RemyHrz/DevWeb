@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% set active_page = "Quiz" %}
-{% set nombrecarte=namespace(value=0) %}
 {% block titre %}
 <title>Quiz {{ current }}!</title>
 {% endblock %}
@@ -10,10 +9,9 @@
 {% if cards %}
 <div class="row mt-2">
 		<div class="col-10">
-		    <h1>{{ current }}</h1>
+		    <h1>{{ current }} (<small>{{ cards|list|count}}</small>):</h1>
 		</div>
 		</div>
-<!--<h1>{{ current }}:</h1>-->
 <div class="container my-5">
 
 
@@ -21,7 +19,6 @@
     {% for card in cards %}
     	 {% if card.date_rev.date() <= today %}
     	 {% if card.course == current %}
-    	 	{% set nombrecarte.value = nombrecarte.value + 1 %}
      	<div class="bg-body-tertiary border rounded-3 p-2">
 	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
 			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>

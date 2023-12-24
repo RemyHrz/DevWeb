@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% set active_page = "Quiz" %}
-{% set nombrecarte=namespace(value=0) %}
 {% block titre %}
 <title>Quiz</title>
 {% endblock %}
@@ -8,12 +7,16 @@
 {% block body %}
 
 
-<div class="container my-5">
-{% if cards %}
 
+{% if cards %}
+<div class="row mt-2">
+		<div class="col-10">
+		    <h1>{{ cards|list|count}} carte{{ "s" if cards|list|count > 1}} à faire aujourd'hui</h1>
+		</div>
+		</div>
+<div class="container my-5">
     {% for card in cards %}
 
-    	 	{% set nombrecarte.value = nombrecarte.value + 1 %}
      	 <div class="bg-body-tertiary border rounded-3 p-2">
 	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
 			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>

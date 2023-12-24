@@ -7,7 +7,7 @@
 {% block body %}
 	<div class="row mt-2">
 		<div class="col-10">
-		    <h1>Liste des cartes :</h1>
+		    <h1>Liste des cartes (<small>{{ cards|list|count }}</small>):</h1>
 		</div>
 		<div class="col-2">
     		<a class="btn btn-success" href="/carte/new">Nouvelle carte</a>
