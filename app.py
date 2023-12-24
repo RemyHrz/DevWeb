@@ -184,12 +184,12 @@ def quiz_fail(id):
 def new_card():
     if request.method == "POST":
         card_question = request.form["question"]
-        card_question = card_question[0].upper() + card_question[1:]
+        cardquestion = card_question[0].upper() + card_question[1:]
         card_answer = request.form["answer"]
-        card_answer = card_answer[0].upper() + card_answer[1:]
+        cardanswer = card_answer[0].upper() + card_answer[1:]
         card_course = request.form["course"]
-        card_course = card_course[0].upper() + card_course[1:]
-        new_card = Cards(question=card_question, answer=card_answer, course=card_course)
+        cardcourse = card_course[0].upper() + card_course[1:]
+        new_card = Cards(question=cardquestion, answer=cardanswer, course=cardcourse)
         db.session.add(new_card)
         db.session.commit()
         return redirect("/carte")
@@ -205,7 +205,7 @@ def new_card_course(course):
         cardanswer = card_answer[0].upper() + card_answer[1:]
         card_course = request.form["course"]
         cardcourse = card_course[0].upper() + card_course[1:]
-        new_card = Cards(question=cardquestion, answer=cardanswer, course=card_course)
+        new_card = Cards(question=cardquestion, answer=cardanswer, course=cardcourse)
         db.session.add(new_card)
         db.session.commit()
         return redirect(str("/cours/")+course)
