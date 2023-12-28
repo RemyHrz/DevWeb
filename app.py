@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 
+#Configuration de Flask et de la base de donnée
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 app.app_context().push()
-
+# last_rev n'est plus utilisé, mais pas supprimé pour ne pas devoir recréer la base de données / migrer
 class Cards(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	course = db.Column(db.String(50), nullable=False)
@@ -29,7 +30,10 @@ class Total(db.Model):
 	def __repr__(self):
 		return str(self.total)
 
-#Pour éviter de recréer les variables à chaque fois    
+#Pour éviter de recréer toute les variables à chaque route    
+# hour et now sont utilisé pour l'affichage du dark ou light mode avant ou après 19h
+# today est utilisé pour aficher la date sur la carte et update en cas de réinitialisation de celle ci
+# tomorrow permet la selection uniquement des carte à réviser dans les quiz 
 def custom_render_template(template_name_or_list, **kwargs):
     common_variables = {
         'courselist': Cards.query.with_entities(Cards.course),
@@ -40,6 +44,8 @@ def custom_render_template(template_name_or_list, **kwargs):
     }
     kwargs.update(common_variables)
     return render_template(template_name_or_list, **kwargs)
+
+
 
 @app.route("/")
 def index():
@@ -73,6 +79,8 @@ def course(course):
             return custom_render_template("course.html", cards=all_cards, currentc=course, todo=todo)
         else:
             return redirect("/carte")
+#currentc et current permettent l'afichage dynamique du nom du cours, dans le titre et la navbar
+# todo contient les cartes à etudier aujourd'hui
 
 @app.route("/carte/delete/<int:id>")
 def delete_card(id):
@@ -135,6 +143,8 @@ def infinity():
 	all_cards = Cards.query.order_by(Cards.date_rev.asc()).all()
 	total = len(all_cards)
 	return custom_render_template("infinty.html",cards=all_cards, total=total)
+
+# total est utilisé pour le pourcentage de réussite
 
 @app.route("/quiz/<course>", methods=["GET", "POST"])
 def quizcourse(course):

@@ -1,13 +1,19 @@
+<!-- Utilisation du template de base -->
 {% extends 'base.html' %}
+<!-- Indique la page active -->
 {% set active_page = "Quiz" %}
+
+<!-- Titre de la page actuelle -->
 {% block titre %}
 <title>Quiz {{ current }}!</title>
 {% endblock %}
 
+<!-- Contenu spécifique à la page -->
 {% block body %}
 
 {% if cards %}
 <div class="row mt-2">
+		<!-- Affiche le titre et nombre de carte à tester -->
 		<div class="col-10">
 		    <br><h1>{{ current }} (<small>{{ cards|list|count}}</small>):</h1>
 		</div>
@@ -17,13 +23,19 @@
 
 
     {% for card in cards %}
+		<!-- Vérifie la date de test de la carte (inférieur ou égale à aujourd'hui) -->
     	 {% if card.date_rev.date() <= today %}
+		 <!-- Vérifie que la carte appartient au cours -->
     	 {% if card.course == current %}
+		 <!-- Affiche la carte-->
      	<div class="bg-body-tertiary border rounded-3 p-2">
+			<!-- Affiche la question -->
 	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
+			<!-- Affiche la réponse (masqué par défaut) -->
 			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>
 			  <span>
 			  <br>
+			  <!-- Bouton pour afficher la réponse, la marquer comme réussie ou ratée -->
 			  <a class="btn btn-info btn-sm" id ="buttonans{{ card['id'] }}" onclick="actionQR('{{ card['id'] }}');this.style.display = 'none'">Réponse</a>
 			  <a class="btn btn-success btn-sm" style="display:none" id="success{{ card['id'] }}" href="/quiz/{{ current }}/sucess/{{ card['id'] }}">Success</a>
 			  <a class="btn btn-danger btn-sm" style="display:none" id="fail{{ card['id'] }}" href="/quiz/{{ current }}/fail/{{ card['id'] }}">Fail</a></span>
@@ -34,14 +46,11 @@
 
 {% endfor %}
 
-
+<!-- Message à afficher si la liste de cartes est vide -->
 {% else %}
-
-
-
 <div class="container my-5">
-
 <h1> Vous n'avez plus de carte a tester aujourd'hui </h1>
+ <!-- Bouton pour aller à liste des cartes -->
 <a class="btn btn-primary" href="{% if current %}/cours/{{current}}{% else %}/carte{% endif %}" role="button">Retourner sur la liste de cartes</a>
 
 {% endif %}

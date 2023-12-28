@@ -1,49 +1,68 @@
+<!-- Utilisation du template de base -->
 {% extends 'base.html' %}
+<!-- Indique la page active -->
 {% set active_page = "Rev" %}
+
+<!-- Titre de la page actuelle -->
 {% block titre %}
 <title>{{ currentc }}</title>
 {% endblock %}
-
+<!-- Contenu spécifique à la page -->
 {% block body %}
+<!-- Classe bootstrap row avec une marge supérieure de 2 -->
 	<div class="row mt-2">
+	<!--Colonne avec une largeur de 10, contenant le nom du cours et le nombre de cartes entre parenthèses. -->
 		<div class="col-10">
 		    <br><h1>{{ currentc }} (<small>{{ cards|list|count }}</small>):</h1>
 		</div>
+		<!--Colonne avec une largeur de 2, contenant un bouton pour créer une nouvelle carte -->
 		<div class="col-2">
     		<br><a class="btn btn-success" href="/carte/new/{{ currentc }}">Nouvelle carte</a>
 		</div>
 	</div>
+<!-- Indique le nombre de carte à réviser en fonction de la variable todo -->
 <span> {%  if todo|list|count == 0 %}Vous n'avez pas de carte {% else %} Vous avez {{ todo|list|count }} carte{{ "s" if todo|list|count > 1}}{% endif %} à faire aujourd'hui</span><br>
     <br>
 
     {% if cards %}
+	<!-- Affiche 'Autre cours:' et la liste de ceux-ci si il y en a plus d'un, et n'affiche pas le cours actuel-->
     	{% if courselist|unique|list|count > 1 %}
 Autre cours :
 			{% for course in courselist|unique %}
 			{% if course.course != currentc %}
+
 			<a style="text-decoration:none" class="badge text-bg-primary rounded-pill" href="/cours/{{ course['course'] }}">{{ course['course'] }}</a>
 			{% endif %}
 			{% endfor %}
 		{% endif %}
 			<br><br>
+	<!-- template de carte-->
     {% for card in cards %}
-
+		<!-- Affiche la date de création de la carte-->
     	<div class="bg-body-tertiary border rounded-3 p-2"><small style="float:right;" >Créée le {{ card['date_created'].strftime('%d-%m-%Y à %H:%M')}}</small>
-	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
+	        <!-- Affiche la question en h4 -->
+			<h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
+			<!-- Affiche la réponse (initialement caché) -->
 			  <span style="white-space: pre-wrap;display:none" class="modal-body py-0" id="answer{{ card['id'] }}"><br>  {{ card['answer'] }}<br></span>
 			  <br>
+			  <!-- Indication de quand la carte doit être tester -->
 			  <span style="float:right;"> A tester {% if card.date_rev.date() > today %} le  {{ card.date_rev.strftime('%d-%m-%Y')}} {% elif card.date_rev.date() <= today %} aujourd'hui {% endif %} </span>
+			  <!-- Bouton pour afficher la réponse -->
 			  <a class="btn btn-info btn-sm" id ="buttonans{{ card['id'] }}" onclick="actionQR('{{ card['id'] }}');">Réponse</a>
+			  <!-- Bouton pour modofier la carte -->
 			  <a class="btn btn-primary btn-sm" href="/{{ currentc }}/edit/{{ card['id'] }}"><i class="bi bi-pencil-square"></i></a>
-	        <a class="btn btn-danger btn-sm" href="/{{ currentc }}/delete/{{ card['id'] }}"><i class="bi bi-trash3"></i></a>
+	        <!-- Bouton pour supprimer la carte -->
+			<a class="btn btn-danger btn-sm" href="/{{ currentc }}/delete/{{ card['id'] }}"><i class="bi bi-trash3"></i></a>
 
 	    </div>
 	    <br>
 
     {% endfor %}
+	<!-- Message à afficher si la liste de carte est vide -->
     {% else %}
     <b> Vous n'avez pas encore de carte ! </b>
     {% endif %}
+	<!-- Pour masquer et afficher la réponse  -->
 <script type="text/javascript" >
 function actionQR(id){
 	$('#answer'+id).toggle();

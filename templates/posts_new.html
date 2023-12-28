@@ -1,25 +1,36 @@
+<!-- Utilisation du template de base -->
 {% extends 'base.html' %}
+<!-- Indique la page active -->
 {% set active_page = "Create" %}
+
+<!-- Titre de la page actuelle -->
 {% block titre %}
 <title>Ajout d'une carte</title>
 {% endblock %}
 
+<!-- Contenu spécifique à la page -->
 {% block body %}
 <br>
     <h3>Nouvelle carte :</h3>
     <br>
+	<!-- Formulaire -->
     <form action="{% if current %}/cours/{{current}}{% else %}/carte/new{% endif %}" method="POST">
+	<!-- Zone de texte pour la question -->
         <textarea class="form-control" type="text" name="question" id="question" placeholder="Question" required></textarea>
         <br>
+		<!-- Zone de texte pour la réponse -->
         <textarea class="form-control" type="text" name="answer" id="answer" placeholder="Réponse" required></textarea>
         <br>
+		<!-- Liste déroulante pour sélectionner le cours -->
         <input class="form-control" list="listcourse" name="course" id="course" placeholder="Cours" {% if current %} value="{{current}}" {% endif %} required>
+			<!-- suggestion pour la liste déroulante basé sur courselist -->
 			<datalist id="listcourse">	
 			{% for course in courselist | unique %}
 			  <option value="{{ course['course'] }}">
 			{% endfor %}
 			</datalist>
         <br>
+		<!-- Bouton pour soumettre le formulaire -->
         <input type="submit" value="Envoyer" class="btn btn-success">
     </form>
     <hr>

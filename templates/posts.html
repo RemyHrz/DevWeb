@@ -1,22 +1,31 @@
+<!-- Utilisation du template de base -->
 {% extends 'base.html' %}
+<!-- Indique la page active -->
 {% set active_page = "cards" %}
+
+<!-- Titre de la page actuelle -->
 {% block titre %}
 <title>Liste des cartes</title>
 {% endblock %}
 
+<!-- Contenu spécifique à la page -->
 {% block body %}
 	<div class="row mt-2">
+		<!-- Affiche le titre et le nombre total de cartes -->
 		<div class="col-10">
 		    <br><h1>Liste des cartes (<small>{{ cards|list|count }}</small>):</h1>
 		</div>
+		<!-- Bouton pour créer une nouvelle carte -->
 		<div class="col-2">
     		<br><a class="btn btn-success" href="/carte/new">Nouvelle carte</a>
 		</div>
 	</div>
+<!-- Affiche le nombre de carte à tester aujourd'hui -->
 <span> {%  if todo|list|count == 0 %}Vous n'avez pas de carte {% else %} Vous avez {{ todo|list|count }} carte{{ "s" if todo|list|count > 1}}{% endif %} à faire aujourd'hui</span><br>
     <br>
     
     {% if cards %}
+<!-- Filter les cartes par cours -->
 Trier par cours : 
 			{% for course in courselist|unique %} 
 			<a style="text-decoration:none" class="badge text-bg-primary rounded-pill" href="/cours/{{ course['course'] }}">{{ course['course'] }}</a>
@@ -25,6 +34,7 @@ Trier par cours :
 			<br>
 			<br>
     {% for card in cards %}
+		<!-- Affiche les détails des cartes avec des boutons pour voir la réponse et éditer ou supprimer une carte -->
     	<div class="bg-body-tertiary border rounded-3 p-2"
     	><small style="float:right;" >Créée le {{ card['date_created'].strftime('%d-%m-%Y à %H:%M')}}</small>
 	        <h4 class="fw-bold mb-0">{{ card['question'] }}</h4>
@@ -38,11 +48,12 @@ Trier par cours :
 	    </div>
 	    <br>
     {% endfor %}
+	<!-- Message à afficher si la liste de cartes est vide -->
     {% else %}
     <b> Vous n'avez pas encore de carte ! </b>
     {% endif %}
 
-
+<!-- Pour masquer et afficher la réponse  -->
 <script type="text/javascript" >
 function actionQR(id){
 	$('#answer'+id).toggle();

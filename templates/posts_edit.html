@@ -1,33 +1,45 @@
+<!-- Utilisation du template de base -->
 {% extends 'base.html' %}
 
+<!-- Titre de la page actuelle -->
 {% block titre %}
 <title>Edition de carte</title>
 {% endblock %}
 
+<!-- Contenu spécifique à la page -->
 {% block body %}
 <br>
     <h1>Modifier la carte :</h1>
     <br>
+	<!-- Formulaire -->
     <form action="{% if current %}/{{current}}/edit/{% else %}/carte/edit/{% endif %}{{ card['id'] }}" method="POST">
+		<!-- Zone de texte obligatoire pour la question -->
         <textarea class="form-control" type="text" name="question" id="question" placeholder="Question : {{ card['question'] }}" required>{{ card['question'] }}</textarea>
         <br>
+		<!-- Zone de texte obligatoire pour la réponse -->
         <textarea class="form-control" type="text" name="answer" id="answer" placeholder="Réponse : {{ card['answer'] }}" required>{{ card['answer'] }}</textarea>
         <br>
+		<!-- Liste déroulante pour sélectionner le cours -->
         <input class="form-control" list="listcourse" name="course" id="course" value="{{ card['course'] }}"  placeholder="cours : {{ card['course'] }}" required>
+			<!-- suggestion pour la liste déroulante basé sur courselist -->
 			<datalist id="listcourse">
 			{% for course in courselist %}
 			  <option value="{{ course['course'] }}">
 			{% endfor %}
 			</datalist>
         <br>
+		<!-- Date à laquelle la carte doit être testée -->
         A tester le <span id="daterev">{{ card.date_rev.strftime('%d-%m-%Y') }}</span><br>
+		<!-- Case à coher pour réinitialiser la date de test -->
         <br> Réinitialiser la date de test : <input onclick="datefc();" type="checkbox" name="reset" id="reset" value="reset" ><br>
         <br>
+		<!-- Bouton pour soumettre le formulaire -->
         <input type="submit" value="Envoyer" class="btn btn-success">
         <hr>
     </form>
 
 <script type="text/javascript" >
+// Mise à jour de la date de test (enfonction de la case cochée)
 function datefc(){if($('#reset').is(':checked')){
 	$("#daterev").text("{{ today.strftime('%d-%m-%Y') }}");
 	}else{
